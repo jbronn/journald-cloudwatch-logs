@@ -86,6 +86,9 @@ The following configuration settings are supported:
   this setting provides a maximum batch size to use when clearing a large backlog of events, e.g.
   from system boot when the program starts for the first time.
   
+* `journal_dir`: (Optional) Use an alternative path to the journal. This enables 
+   journald-cloudwatch-logs to run in a container while reading the host journal. 
+
 ### AWS API access
 
 This program requires access to call some of the Cloudwatch API functions. The recommended way to

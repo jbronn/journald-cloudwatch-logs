@@ -21,6 +21,7 @@ type Config struct {
 	LogStreamName  string
 	StateFilename  string
 	BufferSize     int
+	JournalDir     string
 }
 
 type fileConfig struct {
@@ -30,6 +31,7 @@ type fileConfig struct {
 	LogStreamName string `hcl:"log_stream"`
 	StateFilename string `hcl:"state_file"`
 	BufferSize    int    `hcl:"buffer_size"`
+	JournalDir    string `hcl:"journal_dir"`
 }
 
 func LoadConfig(filename string) (*Config, error) {
@@ -90,6 +92,12 @@ func LoadConfig(filename string) (*Config, error) {
 		config.BufferSize = fConfig.BufferSize
 	} else {
 		config.BufferSize = 100
+	}
+
+	if fConfig.JournalDir != "" {
+		config.JournalDir = fConfig.JournalDir
+	} else {
+		config.JournalDir = ""
 	}
 
 	config.AWSCredentials = awsCredentials.NewChainCredentials([]awsCredentials.Provider{

@@ -38,16 +38,21 @@ func usage() {
 	os.Stderr.WriteString("\n")
 }
 
+func OpenJournal(config *Config) (*sdjournal.Journal, error) {
+	if config.JournalDir == "" {
+		return sdjournal.NewJournal()
+	} else {
+		return sdjournal.NewJournalFromDir(config.JournalDir)
+	}
+}
+
 func run(configFilename string) error {
 	config, err := LoadConfig(configFilename)
 	if err != nil {
 		return fmt.Errorf("error reading config: %s", err)
 	}
 
-	journal, err := sdjournal.NewJournal()
-	if err != nil {
-		return fmt.Errorf("error opening journal: %s", err)
-	}
+	journal, err := OpenJournal(config)
 	defer journal.Close()
 
 	state, err := OpenState(config.StateFilename)
